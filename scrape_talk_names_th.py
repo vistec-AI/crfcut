@@ -1,5 +1,3 @@
-
-
 """
 This script is to scrape the names TED talks from https://www.ted.com/talks that are available in Thai language only.
 
@@ -9,6 +7,7 @@ import os
 import time
 import json
 import re
+import datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -59,5 +58,8 @@ if __name__ == '__main__':
     data = loop_pages(URL, LAST_PAGE_NUMBER)
     print('length:', len(data))
     # print(data)
-    with open('dump_talks_with_thai_transcript.{}.json'.format(), 'w', encoding="utf-8") as f:
+
+    current_time = datetime.datetime.now().strftime("%d-%m-%Y_%H:%M")
+
+    with open('./data/dump_talks_with_thai_transcript.{}.json'.format(), 'w', encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)

@@ -61,5 +61,5 @@ if __name__ == '__main__':
 
     current_time = datetime.datetime.now().strftime("%d-%m-%Y_%H:%M")
 
-    with open('./data/dump_talks_with_thai_transcript.{}.json'.format(), 'w', encoding="utf-8") as f:
+    with open('./data/dump_talks_with_thai_transcript.{}.json'.format(current_time), 'w', encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)

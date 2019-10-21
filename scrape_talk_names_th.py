@@ -50,7 +50,7 @@ def loop_pages(preifx_url, last_page_number=LAST_PAGE_NUMBER):
         all_talks.extend(talks)
 
         print('Accumulated number of talks ', len(all_talks))
-        time.sleep(1)
+        time.sleep(2)
     return all_talks
 
 if __name__ == '__main__':

@@ -68,8 +68,8 @@ def scrape(talks):
         talks_with_transcript.append(talks)
         count += 1
 
-        if index % 100 ==0 and index != 0:
-            time.sleep(8)
+        if index % 200 == 0 and index != 0:
+            time.sleep(random.choice([3, 5, 7, 10]))
 
     print("Total number of parallel talks : ", count)
 

@@ -14,14 +14,14 @@ from pathlib import Path
 from fake_useragent import UserAgent
 ua = UserAgent()
 
-def get_transcription(talk_name, language):
-    headers = {
-        'user-agent': ua.random,
-    }
+def get_transcription(talk_name, language, session):
+    # headers = {
+    #     'user-agent': ua.random,
+    # }
 
     try:
         url =  "https://www.ted.com/talks/{}/transcript.json?language={}".format(talk_name, language)
-        r = requests.get(url, headers=headers)
+        r = session.get(url)
     except Exception as e:
         print('error', e)
         traceback.print_exc()
@@ -47,15 +47,15 @@ def extract_sentences(transcript):
             sentences.append(text)
     return sentences
 
-def scrape(talks):
+def scrape(talks, session):
     count = 0
 
     talks_with_transcript = []
     for index, talk in tqdm(enumerate(talks), total=len(talks)):
 
         talk_name = talk['talk_name']
-        transcript_th = get_transcription(talk_name, 'th')
-        transcript_en = get_transcription(talk_name, 'en')
+        transcript_th = get_transcription(talk_name, 'th', session)
+        transcript_en = get_transcription(talk_name, 'en', session)
 
         sentences = []
         if not 'paragraphs' in transcript_th.keys() or not 'paragraphs' in transcript_en.keys() :
@@ -65,7 +65,7 @@ def scrape(talks):
         talks[index]['transcript_th'] = extract_sentences(transcript_th)
         talks[index]['transcript_en'] = extract_sentences(transcript_en)
 
-        talks_with_transcript.append(talks)
+        talks_with_transcript.append(talks[index])
         count += 1
 
         if index % 200 == 0 and index != 0:
@@ -100,5 +100,10 @@ if __name__ == "__main__":
     with open(talk_names_path, "r", encoding="utf-8") as f:
         talks = json.load(f)
 
-    scaraped_talk = scrape(talks)
-    save(scaraped_talk)
+    with requests.Session() as s:
+
+        s.headers = {
+            'user-agent': ua.random,
+        }
+        scaraped_talk = scrape(talks, s)
+        save(scaraped_talk)

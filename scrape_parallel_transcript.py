@@ -24,16 +24,66 @@ def get_transcription(talk_name, language):
         r = requests.get(url, headers=headers)
     except Exception as e:
         print('error', e)
-        print('Retry:')
+        traceback.print_exc()
+        print("Try again.")
         time.sleep(10)
         headers = {
             'user-agent': ua.random,
         }
         url =  "https://www.ted.com/talks/{}/transcript.json?language={}".format(talk_name, language)
         r = requests.get(url, headers=headers)
-        # traceback.print_exc()
 
     return r.json()
+
+
+def extract_sentences(transcript):
+    sentences = []
+    cues = transcript['paragraphs']
+    for cue in cues:
+        for time_step in cue['cues']:
+            text = time_step['text']
+            text = re.sub(r"\s\n", " ", text) 
+            text = re.sub(r"\n", " ", text) 
+            sentences.append(text)
+    return sentences
+
+def scrape(talks):
+    count = 0
+
+    talks_with_transcript = []
+    for index, talk in tqdm(enumerate(talks), total=len(talks)):
+
+        talk_name = talk['talk_name']
+        transcript_th = get_transcription(talk_name, 'th')
+        transcript_en = get_transcription(talk_name, 'en')
+
+        sentences = []
+        if not 'paragraphs' in transcript_th.keys() or not 'paragraphs' in transcript_en.keys() :
+            print("There is no th-en pair for this talk : `{}`".format(talk_name))
+            continue
+
+        talks[index]['transcript_th'] = extract_sentences(transcript_th)
+        talks[index]['transcript_en'] = extract_sentences(transcript_en)
+
+        talks_with_transcript.append(talks)
+        count += 1
+
+        if index % 100 ==0 and index != 0:
+            time.sleep(8)
+
+    print("Total number of parallel talks : ", count)
+
+    return talks_with_transcript
+
+def save(talks_with_transcript):
+    
+
+    current_time = datetime.datetime.now().strftime("%d-%m-%Y_%H:%M")
+    output_path = "./data/talks.transcript.th-en.{}.json".format(current_time)
+    print('Writing file to {}'.format(output_path))
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(talks_with_transcript, f, ensure_ascii=False, indent=4)
 
 
 if __name__ == "__main__":
@@ -50,39 +100,5 @@ if __name__ == "__main__":
     with open(talk_names_path, "r", encoding="utf-8") as f:
         talks = json.load(f)
 
-    count = 0
-    talks_with_transcript = []
-    for index, talk in tqdm(enumerate(talks), total=len(talks)):
-
-        talk_name = talk['talk_name']
-        for language in ['th', 'en']:
-            data = get_transcription(talk_name, language)
-
-            sentences = []
-            if not 'paragraphs' in data.keys():
-                print("There is no {} language for this talk :{}".format(language, talk_name))
-                break
-            count += 1
-            cues = data['paragraphs']
-            for cue in cues:
-                for time_step in cue['cues']:
-                    text = time_step['text']
-                    text = re.sub(r"\s\n", " ", text) 
-                    text = re.sub(r"\n", " ", text) 
-                    sentences.append(text)
-
-            talks[index]['transcript_{}'.format(language)] = sentences
-            talks_with_transcript.append(talks)
-
-            if index % 100 ==0 and index != 0:
-                time.sleep(10)
-    
-    print("Total number of parallel talks : ", count)
-
-    current_time = datetime.datetime.now().strftime("%d-%m-%Y_%H:%M")
-
-    with open("./data/dump_talks_th-en_transcript.{}.json".format(current_time), "w", encoding="utf-8") as f:
-
-        talks = json.dump(talks, f, ensure_ascii=False, indent=4)
-
-
+    scaraped_talk = scrape(talks)
+    save(scaraped_talk)

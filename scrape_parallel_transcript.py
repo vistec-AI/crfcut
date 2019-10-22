@@ -83,7 +83,7 @@ def save(talks_with_transcript):
     print('Writing file to {}'.format(output_path))
 
     with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(talks_with_transcript, f, ensure_ascii=False, indent=4)
+        json.dump(talks_with_transcript, f, ensure_ascii=False)
 
 
 if __name__ == "__main__":

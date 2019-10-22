@@ -14,13 +14,14 @@ from pathlib import Path
 from fake_useragent import UserAgent
 ua = UserAgent()
 
-def get_transcription(talk_name, language, session):
+
+def get_transcription(talk_id, language, session):
     # headers = {
     #     'user-agent': ua.random,
     # }
 
     try:
-        url =  "https://www.ted.com/talks/{}/transcript.json?language={}".format(talk_name, language)
+        url =  "https://www.ted.com/talks/{}/transcript.json?language={}".format(talk_id, language)
         r = session.get(url)
     except Exception as e:
         print('error', e)
@@ -30,7 +31,7 @@ def get_transcription(talk_name, language, session):
         headers = {
             'user-agent': ua.random,
         }
-        url =  "https://www.ted.com/talks/{}/transcript.json?language={}".format(talk_name, language)
+        url =  "https://www.ted.com/talks/{}/transcript.json?language={}".format(talk_id, language)
         r = requests.get(url, headers=headers)
 
     return r.json()
@@ -54,17 +55,21 @@ def scrape(talks, session):
     for index, talk in tqdm(enumerate(talks), total=len(talks)):
 
         talk_name = talk['talk_name']
-        transcript_th = get_transcription(talk_name, 'th', session)
-        transcript_en = get_transcription(talk_name, 'en', session)
+        talk_id = name2id[talk_name]
+        transcript_th = get_transcription(talk_id, 'th', session)
+        transcript_en = get_transcription(talk_id, 'en', session)
 
         sentences = []
         if not 'paragraphs' in transcript_th.keys() or not 'paragraphs' in transcript_en.keys() :
             print("There is no th-en pair for this talk : `{}`".format(talk_name))
             continue
 
-        talks[index]['transcript_th'] = extract_sentences(transcript_th)
-        talks[index]['transcript_en'] = extract_sentences(transcript_en)
-
+  
+        talk_with_transcript = {
+            "id": talk_id,
+            "th": extract_sentences(transcript_th),
+            "en": extract_sentences(transcript_en),
+        }
         talks_with_transcript.append(talks[index])
         count += 1
 
@@ -85,7 +90,7 @@ def save(talks_with_transcript):
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(talks_with_transcript, f, ensure_ascii=False)
 
-
+name2id = None
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Process some integers.')
@@ -99,6 +104,9 @@ if __name__ == "__main__":
 
     with open(talk_names_path, "r", encoding="utf-8") as f:
         talks = json.load(f)
+
+    with open("./data/name2id.json", "r", encoding="utf-8") as f:
+        name2id = json.load(f)
 
     with requests.Session() as s:
 

@@ -70,7 +70,7 @@ def scrape(talks, session):
             "th": extract_sentences(transcript_th),
             "en": extract_sentences(transcript_en),
         }
-        talks_with_transcript.append(talks[index])
+        talks_with_transcript.append(talk_with_transcript)
         count += 1
 
         if index % 200 == 0 and index != 0:

@@ -8,12 +8,11 @@
 * Rule-based override
 * L2 regularization - also not practical
 * POS-artagger - not really too slow
+* ORCHID - different domains get totally different results
 
 ## What to try
 
-* Try with ORCHID to compare performance more fairly
-
-* More data from TNC and ORCHID
+* TNC
 
 ## What worked
 
@@ -21,3 +20,4 @@
 * L1 regularization of 1
 * Predict end of sentence (space) instead of beginning of sentence
 * Custom POS - only faster convergence
+* Try with ORCHID to compare performance more fairly - 87% vs 95% SOTA

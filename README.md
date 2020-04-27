@@ -6,11 +6,11 @@ The process of training is to get sentences and we will tokenize words and assig
 
 The result of CRF-Cut is trained by different datasets are as follows:
 
-| dataset     | E_f1-score |
-|-------------|------------|
-| Ted         | 0.72       |
-| Orchid      | 0.77       |
-| Fake review | 0.97       |
+| dataset_train | dataset_validate | E_f1-score |
+|---------------|------------------|------------|
+| Ted           | Ted              | 0.72       |
+| Orchid        | Orchid           | 0.77       |
+| Fake review   | Fake review      | 0.97       |
 
 Google colab: https://colab.research.google.com/drive/12nszk-N5LwpHzitlYvhNWVUDSBj30Z1Y
 

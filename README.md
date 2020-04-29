@@ -15,7 +15,9 @@ The result of CRF-Cut is trained by different datasets are as follows:
 | Ted + Orchid + Fake review | Orchid           | 0.69       |
 | Ted + Orchid + Fake review | Fake review      | 0.97       |
 
-Google colab: https://colab.research.google.com/drive/12nszk-N5LwpHzitlYvhNWVUDSBj30Z1Y
+Google colab: 
+- Train 1 dataset: https://colab.research.google.com/drive/12nszk-N5LwpHzitlYvhNWVUDSBj30Z1Y
+- Train 3 datasets: https://colab.research.google.com/drive/1qPEuLZdNNsxhURn8HK7DLi7gbA84coWZ
 
 # Sentence Breaking Journal
 

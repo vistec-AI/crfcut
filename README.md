@@ -9,7 +9,13 @@ The result of CRF-Cut is trained by different datasets are as follows:
 | dataset_train              | dataset_validate | E_f1-score |
 |----------------------------|------------------|------------|
 | Ted                        | Ted              | 0.72       |
+| Ted                        | Orchid           | 0.36       |
+| Ted                        | Fake review      | 0.77       |
+| Orchid                     | Ted              | 0.58       |
 | Orchid                     | Orchid           | 0.77       |
+| Orchid                     | Fake review      | 0.69       |
+| Fake review                | Ted              | 0.56       |
+| Fake review                | Orchid           | 0.53       |
 | Fake review                | Fake review      | 0.97       |
 | Ted + Orchid + Fake review | Ted              | 0.72       |
 | Ted + Orchid + Fake review | Orchid           | 0.69       |

@@ -6,20 +6,20 @@ The process of training is to get sentences and we will tokenize words and assig
 
 The result of CRF-Cut is trained by different datasets are as follows:
 
-| dataset_train              | dataset_validate | E_f1-score | space_correct_accuracy |
-|----------------------------|------------------|------------|------------------------|
-| Ted                        | Ted              | 0.72       | 0.82                   |
-| Ted                        | Orchid           | 0.36       | 0.73                   |
-| Ted                        | Fake review      | 0.77       | 0.78                   |
-| Orchid                     | Ted              | 0.58       | 0.71                   |
-| Orchid                     | Orchid           | 0.77       | 0.87                   |
-| Orchid                     | Fake review      | 0.69       | 0.70                   |
-| Fake review                | Ted              | 0.56       | 0.56                   |
-| Fake review                | Orchid           | 0.53       | 0.67                   |
-| Fake review                | Fake review      | 0.97       | 0.97                   |
-| Ted + Orchid + Fake review | Ted              | 0.72       | 0.78                   |
-| Ted + Orchid + Fake review | Orchid           | 0.69       | 0.83                   |
-| Ted + Orchid + Fake review | Fake review      | 0.97       | 0.96                   |
+| dataset-train              | dataset-validate | I-precision | I-recall | I-fscore | E-precision | E-recall | E-fscore | space-correct |
+|----------------------------|------------------|-------------|----------|----------|-------------|----------|----------|---------------|
+| Ted                        | Ted              | 0.99        | 0.99     | 0.99     | 0.74        | 0.70     | 0.72     | 0.82          |
+| Ted                        | Orchid           | 0.95        | 0.99     | 0.97     | 0.73        | 0.24     | 0.36     | 0.73          |
+| Ted                        | Fake review      | 0.98        | 0.99     | 0.98     | 0.86        | 0.70     | 0.77     | 0.78          |
+| Orchid                     | Ted              | 0.98        | 0.98     | 0.98     | 0.56        | 0.59     | 0.58     | 0.71          |
+| Orchid                     | Orchid           | 0.98        | 0.99     | 0.99     | 0.85        | 0.71     | 0.77     | 0.87          |
+| Orchid                     | Fake review      | 0.97        | 0.99     | 0.98     | 0.77        | 0.63     | 0.69     | 0.70          |
+| Fake review                | Ted              | 0.99        | 0.95     | 0.97     | 0.42        | 0.85     | 0.56     | 0.56          |
+| Fake review                | Orchid           | 0.97        | 0.96     | 0.96     | 0.48        | 0.59     | 0.53     | 0.67          |
+| Fake review                | Fake review      | 1           | 1        | 1        | 0.98        | 0.96     | 0.97     | 0.97          |
+| Ted + Orchid + Fake review | Ted              | 0.99        | 0.98     | 0.99     | 0.66        | 0.77     | 0.71     | 0.78          |
+| Ted + Orchid + Fake review | Orchid           | 0.98        | 0.98     | 0.98     | 0.73        | 0.66     | 0.69     | 0.82          |
+| Ted + Orchid + Fake review | Fake review      | 1           | 1        | 1        | 0.98        | 0.95     | 0.96     | 0.96          |
 
 Google colab: 
 - Train 1 dataset: https://colab.research.google.com/drive/12nszk-N5LwpHzitlYvhNWVUDSBj30Z1Y

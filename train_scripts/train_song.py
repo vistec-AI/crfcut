@@ -129,12 +129,19 @@ print(df.shape)
 df["line_tokenized"] = df.line_tokenized.map(lambda x: " |".join(x.split("|")))
 df["line_tokenized"] = df.line_tokenized + " "
 
-# Split train and test set at 80/20 proportion
+# # Split train and test set at 80/20 proportion
+# train_lines, test_lines, _, _ = train_test_split(
+#     df.line_tokenized, df.song_title, test_size=0.2, random_state=1412
+# )
+# train_lines = [i for i in train_lines]
+# test_lines = [i for i in test_lines]
+
+# Train with everything
 train_lines, test_lines, _, _ = train_test_split(
     df.line_tokenized, df.song_title, test_size=0.2, random_state=1412
 )
-train_lines = [i for i in train_lines]
 test_lines = [i for i in test_lines]
+train_lines = [i for i in train_lines] + test_lines
 
 # tuples
 train_tuples = generate_tuples(train_lines)
@@ -174,11 +181,11 @@ trainer.set_params(
     }
 )
 
-trainer.train("models/song-crf.model")
+trainer.train("models/song-crf-all.model")
 
 # Predict (using test set)
 tagger = pycrfsuite.Tagger()
-tagger.open("models/song-crf.model")
+tagger.open("models/song-crf-all.model")
 y_pred = []
 for xseq in tqdm(x_test, total=len(x_test)):
     y_pred.append(tagger.tag(xseq))

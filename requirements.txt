@@ -1,6 +1,6 @@
 pythainlp==2.1.4
 python-crfsuite==0.9.7
 pandas==0.25.1
-numpy==1.16.1
+numpy==1.22.0
 scikit-learn==0.22.1
 tqdm==4.36.1
